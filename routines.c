@@ -1,0 +1,1 @@
+void skip_chars(size_t count);
