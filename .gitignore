@@ -1,0 +1,7 @@
+*.o
+*.tab.c
+*.tab.h
+*.yy.c
+*.h.gch
+*.output
+HTTPpar
