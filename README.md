@@ -9,3 +9,12 @@ The tool consists of these modules:
     - regularizer: reads the rules, generates the CRG
     - backend: generates C++ code of the parser
 - runtime: the routines and primitives used by the generated parser, in C++ binaries
+
+There is an example directory containing ccfg grammar files and simple test cases.
+
+## Build and run the parser
+
+```bash
+make GRAMMAR=./example/http.ccfg TARGET=./httppar
+./httppar example/test.http
+```
