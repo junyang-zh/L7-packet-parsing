@@ -1,0 +1,3 @@
+[submodule "thirdparty/re2c"]
+	path = thirdparty/re2c
+	url = https://github.com/skvadrik/re2c.git
