@@ -15,6 +15,7 @@ There is an example directory containing ccfg grammar files and simple test case
 ## Build and run the parser
 
 ```bash
+git submodule update --init --recursive
 make GRAMMAR=./example/http.ccfg TARGET=./httppar
 ./httppar example/test.http
 ```
