@@ -3,7 +3,7 @@ TARGET=httppar
 GRAMMAR=example/http.ccfg
 
 # Build variables
-CC=gcc
+CC=g++
 CFLAGS=-O2 -I. -I./runtime
 MAKE=make
 

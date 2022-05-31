@@ -49,7 +49,8 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
     /// Start the user defined parsing program
-    parse();
+    int ret = parse();
+    printf("[main] Parsing ended with return value %d\n", ret);
     fclose(istream);
     return 0;
 }
