@@ -47,23 +47,24 @@ int parse() {
         re2c:eof = 255;
         re2c:tags = 1;
     */
+S1:
     /*!re2c
         *       { return -1; }
         $       { return count; }
         %s
     */
     }
+S0:
     return 0;
 }
 """
 
 with open(args.input_ccfg_file, 'r') as fin:
-    import frontend
-    ruleset = frontend.read_ruleset(fin)
-    
     if (args.output_header):
         with open(args.output_header, 'w+') as foh:
             foh.write(default_header)
     if (args.output_re):
+        from lib.unittests.http_lex import get_ruleset
+        ruleset = get_ruleset()
         with open(args.output_re, 'w+') as fore:
-            fore.write(default_re %ruleset.to_match_block())
+            fore.write(default_re % ruleset.to_match_block())
