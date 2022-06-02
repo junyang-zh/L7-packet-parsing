@@ -48,29 +48,9 @@ int parse() {
         re2c:tags = 1;
     */
     /*!re2c
-        crlf =        ([\r]?[\n]) ;
-        sp =          ([\x20]) ;
-        emptys =      ([\x00]*) ;
-        lws =         ([\r]?[\n]?[ \t]+) ;
-        char =        ([\x00-\x7f]) ;
-        hex =         ([A-Fa-f0-9]+) ;
-        nonws =       ([^\x00-\x1f\x7f ]+) ;
-        text =        ([^\x00-\x1f\x7f]+) ;
-        qdtext =      ([^\x00-\x1f\x7f"]+) ;
-        token =       ([^\x00-\x1f\(\)<>@,;:\\"\/\[\]?={}]+) ;
-    */
-    /*!re2c
         *       { return -1; }
         $       { return count; }
-        @ltag   crlf    { printf("%8s    |   %.*s\n"  , "crlf", (int)(in.cur-ltag)-1, ltag); continue; }
-        @ltag   emptys  { printf("%8s    |   %.*s\n"  , "emptys", (int)(in.cur-ltag)-1, ltag); continue; }
-        @ltag   lws     { printf("%8s    |   %.*s\n"  , "lws", (int)(in.cur-ltag)-1, ltag); continue; }
-        @ltag   char    { printf("%8s    |   %.*s\n"  , "char", (int)(in.cur-ltag)-1, ltag); count++; continue; }
-        @ltag   hex     { printf("%8s    |   %.*s\n"  , "hex", (int)(in.cur-ltag)-1, ltag); count++; continue; }
-        @ltag   nonws   { printf("%8s    |   %.*s\n"  , "nonws", (int)(in.cur-ltag)-1, ltag); count++; continue; }
-        @ltag   text    { printf("%8s    |   %.*s\n"  , "text", (int)(in.cur-ltag)-1, ltag); count++; continue; }
-        @ltag   qdtext  { printf("%8s    |   %.*s\n"  , "qdtext", (int)(in.cur-ltag)-1, ltag); count++; continue; }
-        @ltag   token   { printf("%8s    |   %.*s\n"  , "token", (int)(in.cur-ltag)-1, ltag); count++; continue; }
+        %s
     */
     }
     return 0;
@@ -79,11 +59,11 @@ int parse() {
 
 with open(args.input_ccfg_file, 'r') as fin:
     import frontend
-    rules = frontend.read_ruleset(fin)
+    ruleset = frontend.read_ruleset(fin)
     
     if (args.output_header):
         with open(args.output_header, 'w+') as foh:
             foh.write(default_header)
     if (args.output_re):
         with open(args.output_re, 'w+') as fore:
-            fore.write(default_re)
+            fore.write(default_re %ruleset.to_match_block())
