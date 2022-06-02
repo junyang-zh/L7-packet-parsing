@@ -66,8 +66,10 @@ class SharedLHSRegularRuleSeq(object):
         The field `seq` contains RegularRules or TerminalRules.
         It is a basic block to construct the lpdfa rules.
     '''
-    def __init__(self, seq=[None], ):
+    def __init__(self, seq=[None], lhs_name='', predicate_val='0'):
         self.seq = seq
+        self.lhs_name = lhs_name
+        self.predicate_val = predicate_val
     def to_match_block(self):
         self.seq.sort(reverse=True, key=lambda r : r.priority)
         block = []
@@ -79,3 +81,24 @@ class SharedLHSRegularRuleSeq(object):
             else:
                 raise Exception('Provided grammar may not be regular!')
         return ''.join(block)
+
+class RegularGrammar(object):
+    '''
+        RegularGrammar is a set of SharedLHSRegularRuleSeqs.
+        The init state is the state of the first ruleseq.
+    '''
+    def __init__(self, seq=[None]):
+        self.seq = seq
+    def to_match_body(self):
+        body = []
+        for block in self.seq:
+            body.append(block.lhs_name + block.predicate_val + ':\n/*!re2c\n')
+            # TODO: judge whether to add th eps or EOF rules
+            # Add empty rule and EOF rule
+            body.append(r'''
+                *   { return -1; }
+                $   { return count; }
+            ''')
+            body.append(block.to_match_block())
+            body.append('*/\n')
+        return ''.join(body)
