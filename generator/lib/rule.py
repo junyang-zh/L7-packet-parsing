@@ -87,10 +87,11 @@ class RegularGrammar(object):
         RegularGrammar is a set of SharedLHSRegularRuleSeqs.
         The init state is the state of the first ruleseq.
     '''
-    def __init__(self, seq=[None]):
+    def __init__(self, seq=[None], init_statements='{ }'):
         self.seq = seq
+        self.init_statements = init_statements
     def to_match_body(self):
-        body = []
+        body = [self.init_statements + '\n']
         for block in self.seq:
             body.append(block.lhs_name + block.predicate_val + ':\n/*!re2c\n')
             # TODO: judge whether to add th eps or EOF rules
